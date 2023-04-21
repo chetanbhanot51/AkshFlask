@@ -26,6 +26,7 @@ def addposts():
         conn.commit()
         # conn.close()
         return render_template('addposts3.html', posts="Post successfully added to the DB")
+        print("Post successfully added to the DB")
     else:
         return render_template('addposts3.html')
 

@@ -1,0 +1,13 @@
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- script: |
+    python setup.py install package sonar:sonar -Dsonar.host.url=https://sonarcloud.io/ -Dsonar.organization=azuredevsecops23 -Dsonar.projectKey=azuredevsecops23 -Dsonar.login=37f2ca1dd981acc6c28159149259efb62d434904
+  displayName: "Integrate SAST using SonarCloud in Azure DevOps DevSecOps Pipeline"
+
+# - task: SonarSource.sonarqube.6D01813A-9589-4B15-8491-8164AEB38055.SonarQubeAnalyze@4
+#  displayName: 'Run Code Analysis'
