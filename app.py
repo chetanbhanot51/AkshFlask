@@ -1,10 +1,7 @@
 from flask import Flask, render_template, request
 import sqlite3
 app = Flask(__name__)
-# Understanding 1: Database database.db file is the database
-# 2: "/" is displaying sql query that displays all posts in db. Is this GET method?
-# 3: Want to insert a new blog post. So i will create a new function with new decorator and new html.
-#    this will be a POST method with INSERT query?
+
 def get_db_connection():
     conn = sqlite3.connect('database.db')
     conn.row_factory = sqlite3.Row
@@ -17,17 +14,21 @@ def index():
     conn.close()
     return render_template('index2.html', posts=posts)
 
-@app.route('/addposts')
+@app.route('/addposts', methods=['GET', 'POST'])
 def addposts():
-    conn = get_db_connection()
-    #table name is "posts". How to add values captured in HTML page?
-    query = "INSERT INTO posts (title, content) VALUES (%s, %s, %s)"
-    newposts = conn.execute(query).fetchall()
-    conn.close()
-    return render_template('addposts2.html', posts="Post successfully added to the DB")
-
+    if request.method == 'POST':
+        c = request.form.get("Title")
+        d = request.form.get("Content")
+        conn = get_db_connection()
+        print(c,"------------------------------------------------------------")
+        query = "INSERT INTO posts (title, content) VALUES (?, ?)"
+        cursor = conn.execute(query, (c, d))
+        conn.commit()
+        # conn.close()
+        return render_template('addposts3.html', posts="Post successfully added to the DB")
+    else:
+        return render_template('addposts3.html')
 
 if __name__ == "__main__":
     app.run(debug=True, port=8000)
 
-# bhanot saab the great..burrah
