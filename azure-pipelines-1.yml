@@ -14,5 +14,17 @@ steps:
     python setup.py install package sonar:sonar -Dsonar.host.url=https://sonarcloud.io/ -Dsonar.organization=azuredevsecops23 -Dsonar.projectKey=azuredevsecops23 -Dsonar.login=37f2ca1dd981acc6c28159149259efb62d434904
   displayName: "Integrate SAST using SonarCloud in Azure DevOps DevSecOps Pipeline"
 
-# - task: SonarSource.sonarqube.6D01813A-9589-4B15-8491-8164AEB38055.SonarQubeAnalyze@4
-#  displayName: 'Run Code Analysis'
+steps:
+- checkout: self
+  fetchDepth: 0
+
+
+- task: SonarCloudPrepare@1
+  displayName: 'Prepare analysis configuration'
+  inputs:
+    Sonarcloud: '37f2ca1dd981acc6c28159149259efb62d434904'
+    organization: 'azuredevsecops23'
+    scannerMode: 'MSBuild'
+    projectKey: 'chetanbhanot5165_FlaskBlog3'
+    projectName: 'FlaskBlog3'
+
