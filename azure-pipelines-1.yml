@@ -22,7 +22,7 @@ steps:
 - task: SonarCloudPrepare@1
   displayName: 'Prepare analysis configuration'
   inputs:
-    Sonarcloud: '37f2ca1dd981acc6c28159149259efb62d434904'
+    Sonarcloud: 'azuredevsecops23'
     organization: 'azuredevsecops23'
     scannerMode: 'MSBuild'
     projectKey: 'chetanbhanot5165_FlaskBlog3'
