@@ -25,10 +25,44 @@ def addposts():
         cursor = conn.execute(query, (c, d))
         conn.commit()
         # conn.close()
-        return render_template('addposts3.html', posts="Post successfully added to the DB")
-        print("Post successfully added to the DB")
-    else:
-        return render_template('addposts3.html')
+        return render_template('index2.html', posts="lets see")
+    return render_template('addposts3.html', posts="Post successfully added to the DB")
+        # print("Post successfully added to the DB")
+    # else:
+    #     return render_template('addposts3.html')
+
+@app.route('/delposts', methods=['GET', 'POST'])
+def delposts():
+    if request.method == 'POST':
+        a = request.form.get('btn')
+        conn = get_db_connection()
+        print('---------------------------',a)
+        query = "DELETE FROM POSTS WHERE id = ?"
+        cursor = conn.execute(query,(a))
+        conn.commit()
+    return render_template('delposts.html', val=a)
+
+global a
+a = 0
+
+@app.route('/editposts', methods=['GET', 'POST'])
+def editposts():
+    global a
+    # print("-------------------------------->",a)
+    if request.method == 'POST':
+        if request.form.get('editbtn') != None:
+            a = request.form['editbtn']
+        if request.form.get('newbutton') !=None:
+            new_content = request.form.get('newbutton')
+            print(new_content,"********************************")
+            conn = get_db_connection()
+            print('---------------------------',a)
+            query = "UPDATE posts SET content = ? WHERE  id = ?"
+            conn.execute(query,(new_content, a))
+            conn.commit()
+            return render_template('editposts3.html')
+            # return new_content
+    return render_template('editposts.html')
 
 if __name__ == "__main__":
     app.run(debug=True, port=8000)
