@@ -1,0 +1,35 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- script: |
+    python setup.py install package sonar:sonar -Dsonar.host.url=https://sonarcloud.io/ -Dsonar.organization=azuredevsecops23 -Dsonar.projectKey=azuredevsecops23 -Dsonar.login=37f2ca1dd981acc6c28159149259efb62d434904
+    sleep 5
+    sudo apt update
+    sudo apt install curl jq 
+    quality_status=$(curl -s -u 14ad4797c02810a818f21384add02744d3f9e34d: https://sonarcloud.io/api/qualitygates/project_status?projectKey=azuredevopsadodevsecopsprojectkey | jq -r '.projectStatus.status')
+    echo "SonarCloud analysistatus is $quality_status"; 
+    if [[ $quality_status == "ERROR" ]] ; then exit 1;fi
+  displayName: "Integrate SAST using SonarCloud to populate code coverage in Azure DevOps DevSecOps Pipeline"
+
+# steps:
+# - checkout: self
+#   fetchDepth: 0
+
+
+- task: SonarCloudPrepare@1
+  displayName: 'Prepare analysis configuration'
+  inputs:
+    Sonarcloud: 'azuredevsecops23'
+    organization: 'azuredevsecops23'
+    scannerMode: 'MSBuild'
+    projectKey: 'chetanbhanot5165_FlaskBlog3'
+    projectName: 'FlaskBlog3'
